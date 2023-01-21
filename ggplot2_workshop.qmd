@@ -12,6 +12,9 @@ format:
 number-sections: false
 ---
 
+## Starting questions
+
+
 ## Aim and warm up
 
 -   Understand what ggplot2 is and what it can be used for
@@ -22,8 +25,9 @@ These are very broad goals so there is much room for people with different level
 
 - This workshop is participation driven and hopfully filled with interactions!
 
-## What are your thoughts about plotting?
+## What are your thoughts regarding plotting?
 
+::: {.panel-tabset}
 ### Intro questions about plotting experience
 
 -   What are your initial thoughts about plotting in general?
@@ -40,14 +44,22 @@ These are very broad goals so there is much room for people with different level
 -   What would you like to learn during this work shop?
     - Write down!
 
+:::
 
-## ggplot fundamentals walk through
+## R fundamentals walk through
 
+::: {.panel-tabset}
 ### What is R?
 
 > R is a free software environment for statistical computing and graphics.
 
 Basically a free progaming language for (mostly) statistics and plotting.
+
+
+### How to use R?
+
+Best way to use R for beginners is with R studio. R studio adds clickable buttons to R which reduces the amount of code you need to type! Basically as easy to use as Excel (but better!).
+
 
 ### Functions and varibles
 **Varible** = a symbolic name associated with a value 
@@ -63,10 +75,7 @@ x <- 4
 # a function that calculates the sum of the values within the parenthesis
 sum(5, 5)
 ```
-
-### How does R work?
-
-Best way to use R for beginners is with R studio. R studio adds clickable buttons to R which reduces the amount of code you need to type! Basically as easy to use as Excel (but better!).
+::: 
 
 ## These are the packages used in the workshop 
 ```{r setup}
@@ -90,8 +99,11 @@ data(iris)
 library(gapminder)
 ```
 
-### What is ggplot2?
+## What is ggplot2?
 
+::: {.panel-tabset}
+
+### The package
 ggplot2 is a package (collection of code) for plotting
 
 - Almost all plots 
@@ -103,9 +115,16 @@ ggplot2 is a package (collection of code) for plotting
 
 Dataframes!
 
+
 ```{r}
 kable(head(iris))
 ```
+
+:::
+
+## Lets build a plot! 
+
+::: {.panel-tabset}
 
 ### The structure of a ggplot
 
@@ -130,8 +149,8 @@ ggplot(data, aes(x = varible_A, y = varible_B)) +
   even_more_stuff()
 ```
 
-::: {.panel-tabset}
-#### What are Geoms?
+
+### What are Geoms?
 
 Basically the type of plot.
 
@@ -165,7 +184,7 @@ ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) +
 ```
 
 
-#### How do I make the plot not ugly?
+### How do I make the plot not ugly?
 ```{r}
 #| label: fig-prettifying
 #| fig-cap: Prettifying plot
@@ -202,7 +221,7 @@ ggplot(iris, aes(x = Species, y = Sepal.Length)) +
   theme_classic()
 ```
 
-#### Working with groups
+### Working with groups
 
 ```{r}
 #| label: fig-prettifying_x2
@@ -235,9 +254,6 @@ ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) +
   theme_classic() +
   facet_grid(~Species)
 ```
-:::
-## ggplot2 inspiration
-
 
 ### Custom themes
 
@@ -257,8 +273,8 @@ ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) +
 
 # Swan plot
 ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) +
-  geom_point(size = 2, color = '#31697e') +
-  facet_grid(~str_to_title(Species)) + # Convert lower case to upper case for first letter in name 
+  geom_point(size = 2, color = "#31697e") +
+  facet_grid(~ str_to_title(Species)) + # Convert lower case to upper case for first letter in name
   # specify what the aestetics of the plot shuld look like
   theme(
     text = element_text(size = 15),
@@ -276,14 +292,17 @@ ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) +
     legend.title = element_text(),
     panel.grid.major.y = element_line(colour = "#c0c1c0", linetype = "dashed"),
     panel.grid.major.x = element_blank(),
-    legend.position="none"
+    legend.position = "none"
   ) +
   # Specify x axis label and tics
-  scale_x_discrete(name ="Sepal width", 
-                    limits=c(1.5, 2.5, 3.5 ,4.5)) +
+  scale_x_discrete(
+    name = "Sepal width",
+    limits = c(1.5, 2.5, 3.5, 4.5)
+  ) +
   ylab("Sepal Lenght")
 ```
 
+:::
 
 ### Interactive plots
 ::: {.panel-tabset}
@@ -298,8 +317,7 @@ p <- ggplot(gapminder, aes(x = gdpPercap, y = lifeExp, color = continent)) +
   geom_point(aes(size = pop, frame = year, ids = country)) +
   scale_x_log10() +
   scale_color_manual(values = c("#000000", "#E69F00", "#56B4E9", "#009E73", "#9E002B")) +
-  
-    theme(
+  theme(
     text = element_text(size = 15),
     legend.key = element_blank(),
     strip.text.x = element_text(colour = "black", size = 20),
@@ -314,7 +332,8 @@ p <- ggplot(gapminder, aes(x = gdpPercap, y = lifeExp, color = continent)) +
     legend.text = element_text(),
     legend.title = element_text(),
     panel.grid.major.y = element_line(colour = "#c0c1c0", linetype = "dashed"),
-    panel.grid.major.x = element_blank())
+    panel.grid.major.x = element_blank()
+  )
 
 # Turns the ggplot interactive!
 ggplotly(p)
@@ -479,8 +498,3 @@ Final 10/15 min we will discuss out thoughts (if time permits)
 https://r-graph-gallery.com
 
 https://posit.co/resources/cheatsheets/
-
-
-
-
-
