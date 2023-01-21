@@ -1,0 +1,486 @@
+---
+title: "ggplot workshop 23-01/2023"
+theme: journal
+format:
+  html:
+    toc: true
+    anchor-sections: true
+    code-fold: true
+    code-line_numbers: true
+    code-copy: true
+    code-link: true
+number-sections: false
+---
+
+## Aim and warm up
+
+-   Understand what ggplot2 is and what it can be used for
+-   How you can use ggplot2 to plot data for your project
+-   Become a better plotter
+
+These are very broad goals so there is much room for people with different levels of proficiency in plotting or ggplot2 to learn something during this workshop.
+
+- This workshop is participation driven and hopfully filled with interactions!
+
+## What are your thoughts about plotting?
+
+### Intro questions about plotting experience
+
+-   What are your initial thoughts about plotting in general?
+-   What tools do you use for plotting?
+-   What do you think of these tools?
+
+### Questions about plots
+
+-   What is your favorite plot and why?
+-   What is your least favorite plot and why?
+
+### Final questions
+
+-   What would you like to learn during this work shop?
+    - Write down!
+
+
+## ggplot fundamentals walk through
+
+### What is R?
+
+> R is a free software environment for statistical computing and graphics.
+
+Basically a free progaming language for (mostly) statistics and plotting.
+
+### Functions and varibles
+**Varible** = a symbolic name associated with a value 
+
+**Function** = does something. Ends with "()"
+
+```{r}
+#| message: false
+# assign value 4 to varible x
+x <- 4
+# x * 2 = 8
+
+# a function that calculates the sum of the values within the parenthesis
+sum(5, 5)
+```
+
+### How does R work?
+
+Best way to use R for beginners is with R studio. R studio adds clickable buttons to R which reduces the amount of code you need to type! Basically as easy to use as Excel (but better!).
+
+## These are the packages used in the workshop 
+```{r setup}
+#| include: true
+#| warning: false
+
+# ggplot and other data wrangling tools
+library(tidyverse)
+
+# tool for working with colors
+library(viridis)
+
+# Generates good looking tables
+library(knitr)
+
+# plotting tool
+library(plotly)
+
+# data
+data(iris)
+library(gapminder)
+```
+
+### What is ggplot2?
+
+ggplot2 is a package (collection of code) for plotting
+
+- Almost all plots 
+- Very flexible
+
+![Types of ggplot plots](plots.png)
+
+### What type of data does it want?
+
+Dataframes!
+
+```{r}
+kable(head(iris))
+```
+
+### The structure of a ggplot
+
+```{markdown}
+# Start ggplot
+ggplot()
+
+# Give it some data to plot
+ggplot(data)
+
+# Explain what should be on the plots axes
+ggplot(data, aes(x = varible_A, y = varible_B))
+
+# Tell it what type of plot you want
+ggplot(data, aes(x = varible_A, y = varible_B)) +
+  geom()
+
+# Add more stuff!
+ggplot(data, aes(x = varible_A, y = varible_B)) +
+  geom() +
+  more_stuff() +
+  even_more_stuff()
+```
+
+::: {.panel-tabset}
+#### What are Geoms?
+
+Basically the type of plot.
+
+```{r}
+#| label: fig-geoms
+#| fig-cap: Comparison of geoms
+#| fig-subcap:
+#|   - "geom_point"
+#|   - "geom_boxplot"
+#|   - "geom_violin"
+#|   - "geom_boxplot + geom_jitter"
+#|   - "geom_point"
+#| layout-ncol: 2
+#| fig.height: 3.5
+#| fig.width: 3
+ggplot(iris, aes(x = Species, y = Sepal.Length)) +
+  geom_point()
+
+ggplot(iris, aes(x = Species, y = Sepal.Length)) +
+  geom_boxplot()
+
+ggplot(iris, aes(x = Species, y = Sepal.Length)) +
+  geom_violin()
+
+ggplot(iris, aes(x = Species, y = Sepal.Length)) +
+  geom_boxplot() +
+  geom_jitter()
+
+ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) +
+  geom_point()
+```
+
+
+#### How do I make the plot not ugly?
+```{r}
+#| label: fig-prettifying
+#| fig-cap: Prettifying plot
+#| fig-subcap:
+#|   - "Ugly!"
+#|   - "Change width and size of geom"
+#|   - "Change theme"
+#|   - "Size and alpha"
+#| layout-ncol: 2
+#| fig.height: 3.5
+#| fig.width: 3
+
+ggplot(iris, aes(x = Species, y = Sepal.Length)) +
+  geom_boxplot() +
+  geom_jitter()
+
+ggplot(iris, aes(x = Species, y = Sepal.Length)) +
+  geom_boxplot(width = 0.5) +
+  geom_jitter(width = 0.1)
+
+ggplot(iris, aes(x = Species, y = Sepal.Length)) +
+  geom_boxplot(width = 0.5) +
+  geom_jitter(width = 0.1) +
+  theme_classic()
+
+ggplot(iris, aes(x = Species, y = Sepal.Length)) +
+  geom_boxplot(width = 0.5) +
+  geom_jitter(width = 0.1, alpha = 0.5, size = 0.8) +
+  theme_classic()
+
+ggplot(iris, aes(x = Species, y = Sepal.Length)) +
+  geom_boxplot(width = 0.5, fill = "#537FA6") +
+  geom_jitter(width = 0.1, , alpha = 0.5, size = 0.8) +
+  theme_classic()
+```
+
+#### Working with groups
+
+```{r}
+#| label: fig-prettifying_x2
+#| fig-cap: Separating groups of data
+#| fig-subcap:
+#|   - "color = Species"
+#|   - "size = Species"
+#|   - "shape = Species"
+#|   - "facet_grid(~Species)"
+#| layout-ncol: 2
+#| warning: false
+#| fig.height: 4
+#| fig.width: 5
+
+ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length, color = Species)) +
+  geom_point() +
+  theme_classic() +
+  scale_color_viridis_d()
+
+ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length, size = Species)) +
+  geom_point() +
+  theme_classic()
+
+ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length, shape = Species)) +
+  geom_point() +
+  theme_classic()
+
+ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) +
+  geom_point() +
+  theme_classic() +
+  facet_grid(~Species)
+```
+:::
+## ggplot2 inspiration
+
+
+### Custom themes
+
+```{r}
+#| warning: false
+#| fig-subcap:
+#|   - "Duckling"
+#|   - "Swan"
+#| layout-ncol: 2
+
+# Ducklng plot
+ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) +
+  geom_point() +
+  theme_classic() +
+  facet_grid(~Species)
+
+
+# Swan plot
+ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) +
+  geom_point(size = 2, color = '#31697e') +
+  facet_grid(~str_to_title(Species)) + # Convert lower case to upper case for first letter in name 
+  # specify what the aestetics of the plot shuld look like
+  theme(
+    text = element_text(size = 15),
+    legend.key = element_blank(),
+    strip.text.x = element_text(colour = "black", size = 20),
+    panel.spacing = unit(2, "lines"),
+    strip.background = element_rect(colour = NA, fill = NA),
+    axis.line = element_line(size = 0.7, colour = "black"),
+    panel.background = element_rect(fill = "white"),
+    axis.text.y = element_text(color = "black"),
+    axis.text.x = element_text(color = "black"),
+    axis.ticks = element_line(color = "black"),
+    axis.title = element_text(),
+    legend.text = element_text(),
+    legend.title = element_text(),
+    panel.grid.major.y = element_line(colour = "#c0c1c0", linetype = "dashed"),
+    panel.grid.major.x = element_blank(),
+    legend.position="none"
+  ) +
+  # Specify x axis label and tics
+  scale_x_discrete(name ="Sepal width", 
+                    limits=c(1.5, 2.5, 3.5 ,4.5)) +
+  ylab("Sepal Lenght")
+```
+
+
+### Interactive plots
+::: {.panel-tabset}
+
+#### Sliders
+
+````{r}
+#| warning: false
+kable(head(gapminder))
+
+p <- ggplot(gapminder, aes(x = gdpPercap, y = lifeExp, color = continent)) +
+  geom_point(aes(size = pop, frame = year, ids = country)) +
+  scale_x_log10() +
+  scale_color_manual(values = c("#000000", "#E69F00", "#56B4E9", "#009E73", "#9E002B")) +
+  
+    theme(
+    text = element_text(size = 15),
+    legend.key = element_blank(),
+    strip.text.x = element_text(colour = "black", size = 20),
+    panel.spacing = unit(2, "lines"),
+    strip.background = element_rect(colour = NA, fill = NA),
+    axis.line = element_line(size = 0.7, colour = "black"),
+    panel.background = element_rect(fill = "white"),
+    axis.text.y = element_text(color = "black"),
+    axis.text.x = element_text(color = "black"),
+    axis.ticks = element_line(color = "black"),
+    axis.title = element_text(),
+    legend.text = element_text(),
+    legend.title = element_text(),
+    panel.grid.major.y = element_line(colour = "#c0c1c0", linetype = "dashed"),
+    panel.grid.major.x = element_blank())
+
+# Turns the ggplot interactive!
+ggplotly(p)
+````
+#### Buttons
+```{r}
+library(plotly)
+
+x0 <- rnorm(400, mean = 2, sd = 0.4)
+y0 <- rnorm(400, mean = 2, sd = 0.4)
+x1 <- rnorm(400, mean = 3, sd = 0.6)
+y1 <- rnorm(400, mean = 6, sd = 0.4)
+x2 <- rnorm(400, mean = 4, sd = 0.2)
+y2 <- rnorm(400, mean = 4, sd = 0.4)
+
+# shapes components
+cluster0 <- list(
+  type = "circle",
+  xref = "x", yref = "y",
+  x0 = min(x0), y0 = min(y0),
+  x1 = max(x0), y1 = max(y0),
+  opacity = 0.25,
+  line = list(color = "#835AF1"),
+  fillcolor = "#835AF1"
+)
+
+cluster1 <- list(
+  type = "circle",
+  xref = "x", yref = "y",
+  x0 = min(x1), y0 = min(y1),
+  x1 = max(x1), y1 = max(y1),
+  opacity = 0.25,
+  line = list(color = "#7FA6EE"),
+  fillcolor = "#7FA6EE"
+)
+
+cluster2 <- list(
+  type = "circle",
+  xref = "x", yref = "y",
+  x0 = min(x2), y0 = min(y2),
+  x1 = max(x2), y1 = max(y2),
+  opacity = 0.25,
+  line = list(color = "#B8F7D4"),
+  fillcolor = "#B8F7D4"
+)
+
+# updatemenus component
+updatemenus <- list(
+  list(
+    active = -1,
+    type = "buttons",
+    buttons = list(
+      list(
+        label = "None",
+        method = "relayout",
+        args = list(list(shapes = c()))
+      ),
+      list(
+        label = "Cluster 0",
+        method = "relayout",
+        args = list(list(shapes = list(cluster0, c(), c())))
+      ),
+      list(
+        label = "Cluster 1",
+        method = "relayout",
+        args = list(list(shapes = list(c(), cluster1, c())))
+      ),
+      list(
+        label = "Cluster 2",
+        method = "relayout",
+        args = list(list(shapes = list(c(), c(), cluster2)))
+      ),
+      list(
+        label = "All",
+        method = "relayout",
+        args = list(list(shapes = list(cluster0, cluster1, cluster2)))
+      )
+    )
+  )
+)
+
+fig <- plot_ly(type = "scatter", mode = "markers")
+fig <- fig %>% add_trace(x = x0, y = y0, mode = "markers", marker = list(color = "#835AF1"))
+fig <- fig %>% add_trace(x = x1, y = y1, mode = "markers", marker = list(color = "#7FA6EE"))
+fig <- fig %>% add_trace(x = x2, y = y2, mode = "markers", marker = list(color = "#B8F7D4"))
+fig <- fig %>% layout(
+  title = "Highlight Clusters", showlegend = FALSE,
+  updatemenus = updatemenus
+)
+
+fig
+```
+
+
+
+#### Maps
+```{r}
+df <- read.csv("https://raw.githubusercontent.com/plotly/datasets/master/2011_us_ag_exports.csv")
+df$hover <- with(df, paste(
+  state, "<br>", "Beef", beef, "Dairy", dairy, "<br>",
+  "Fruits", total.fruits, "Veggies", total.veggies,
+  "<br>", "Wheat", wheat, "Corn", corn
+))
+# give state boundaries a white border
+l <- list(color = toRGB("white"), width = 2)
+# specify some map projection/options
+g <- list(
+  scope = "usa",
+  projection = list(type = "albers usa"),
+  showlakes = TRUE,
+  lakecolor = toRGB("white")
+)
+
+fig <- plot_geo(df, locationmode = "USA-states")
+fig <- fig %>% add_trace(
+  z = ~total.exports, text = ~hover, locations = ~code,
+  color = ~total.exports, colors = "Purples"
+)
+fig <- fig %>% colorbar(title = "Millions USD")
+fig <- fig %>% layout(
+  title = "2011 US Agriculture Exports by State<br>(Hover for breakdown)",
+  geo = g
+)
+
+fig
+```
+
+::: 
+
+### Save plots
+
+The best way of saving a plot is with `ggsave()`
+
+```{r}
+#| warning: false
+# dpi = dots per inch = resolution
+ggsave("/path/to/plot.png", width = 20, height = 20, units = "cm", dpi = 400)
+```
+
+## Workshop assignment
+
+People who feel comfortable with R and ggplot get in groups of two or three.
+
+-   Discuss what you would like to learn during this workshop. Your group buddy might know how to do just that!
+
+-   Discuss the data you brought.
+
+    -   Why did you bring it?
+    -   What are you trying to plot?
+    -   Did you succeed?
+    -   Does the plot tell the story you want it to tell?
+    -   Can you find another way of plotting it?
+    -   Can you make the plot prettier?
+    -   Is it possible to make it interactive?
+
+The people who feel uncomfortable with either R or RStudio will get a more in depth introduction do it.
+
+Final 10/15 min we will discuss out thoughts (if time permits) 
+
+## Good resourses
+
+https://r-graph-gallery.com
+
+https://posit.co/resources/cheatsheets/
+
+
+
+
+
