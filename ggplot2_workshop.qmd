@@ -198,6 +198,37 @@ ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) +
 ```
 
 
+
+### Working with groups
+
+```{r}
+#| label: fig-prettifying_x2
+#| fig-cap: Separating groups of data
+#| fig-subcap:
+#|   - "color = Species"
+#|   - "size = Species"
+#|   - "shape = Species"
+#|   - "facet_grid(~Species)"
+#| layout-ncol: 2
+#| warning: false
+#| fig.height: 4
+#| fig.width: 5
+
+ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length, color = Species)) +
+  geom_point() +
+  scale_color_viridis_d()
+
+ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length, size = Species)) +
+  geom_point()
+
+ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length, shape = Species)) +
+  geom_point() 
+
+ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) +
+  geom_point() +
+  facet_grid(~Species)
+```
+
 ### How do I make the plot not ugly?
 ```{r}
 #| label: fig-prettifying
@@ -233,40 +264,6 @@ ggplot(iris, aes(x = Species, y = Sepal.Length)) +
   geom_boxplot(width = 0.5, fill = "#537FA6") +
   geom_jitter(width = 0.1, , alpha = 0.5, size = 0.8) +
   theme_classic()
-```
-
-### Working with groups
-
-```{r}
-#| label: fig-prettifying_x2
-#| fig-cap: Separating groups of data
-#| fig-subcap:
-#|   - "color = Species"
-#|   - "size = Species"
-#|   - "shape = Species"
-#|   - "facet_grid(~Species)"
-#| layout-ncol: 2
-#| warning: false
-#| fig.height: 4
-#| fig.width: 5
-
-ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length, color = Species)) +
-  geom_point() +
-  theme_classic() +
-  scale_color_viridis_d()
-
-ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length, size = Species)) +
-  geom_point() +
-  theme_classic()
-
-ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length, shape = Species)) +
-  geom_point() +
-  theme_classic()
-
-ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) +
-  geom_point() +
-  theme_classic() +
-  facet_grid(~Species)
 ```
 
 ### Custom themes
