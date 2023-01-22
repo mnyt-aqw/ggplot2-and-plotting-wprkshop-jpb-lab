@@ -1,5 +1,6 @@
 ---
-title: "ggplot workshop 23-01/2023"
+title: "ggplot2 workshop"
+date: "2023-01-23"
 author: "Marcus Wenne"
 theme: sandstone
 format:
@@ -15,10 +16,7 @@ number-sections: false
 title-block-banner: true
 ---
 
-## Starting questions
-
-
-## Aim and warm up
+## Aim of the work shop
 
 -   Understand what ggplot2 is and what it can be used for
 -   How you can use ggplot2 to plot data for your project
