@@ -1,6 +1,7 @@
 ---
 title: "ggplot workshop 23-01/2023"
-theme: journal
+author: "Marcus Wenne"
+theme: sandstone
 format:
   html:
     toc: true
@@ -9,7 +10,9 @@ format:
     code-line_numbers: true
     code-copy: true
     code-link: true
+    code-summary: "Show the code"
 number-sections: false
+title-block-banner: true
 ---
 
 ## Starting questions
@@ -21,9 +24,9 @@ number-sections: false
 -   How you can use ggplot2 to plot data for your project
 -   Become a better plotter
 
-These are very broad goals so there is much room for people with different levels of proficiency in plotting or ggplot2 to learn something during this workshop.
-
-- This workshop is participation driven and hopfully filled with interactions!
+::: {.callout-note}
+This workshop is participation driven and hopfully filled with interactions!
+:::
 
 ## What are your thoughts regarding plotting?
 
@@ -43,6 +46,7 @@ These are very broad goals so there is much room for people with different level
 
 -   What would you like to learn during this work shop?
     - Write down!
+
 
 :::
 
@@ -64,16 +68,24 @@ Best way to use R for beginners is with R studio. R studio adds clickable button
 ### Functions and varibles
 **Varible** = a symbolic name associated with a value 
 
-**Function** = does something. Ends with "()"
-
 ```{r}
 #| message: false
 # assign value 4 to varible x
 x <- 4
-# x * 2 = 8
+
+# assign value of equation to y
+y <- x * 2
+
+# Print y to console
+print(y)
+```
+**Function** = does something. Ends with "()"
+```{r}
+# Assign values to "values"
+values <- c(5,5)
 
 # a function that calculates the sum of the values within the parenthesis
-sum(5, 5)
+sum(values)
 ```
 ::: 
 
@@ -129,6 +141,7 @@ kable(head(iris))
 ### The structure of a ggplot
 
 ```{markdown}
+
 # Start ggplot
 ggplot()
 
@@ -155,6 +168,8 @@ ggplot(data, aes(x = varible_A, y = varible_B)) +
 Basically the type of plot.
 
 ```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
 #| label: fig-geoms
 #| fig-cap: Comparison of geoms
 #| fig-subcap:
@@ -166,6 +181,7 @@ Basically the type of plot.
 #| layout-ncol: 2
 #| fig.height: 3.5
 #| fig.width: 3
+
 ggplot(iris, aes(x = Species, y = Sepal.Length)) +
   geom_point()
 
