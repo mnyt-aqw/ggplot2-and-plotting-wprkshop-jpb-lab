@@ -238,6 +238,7 @@ ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) +
 #|   - "Change width and size of geom"
 #|   - "Change theme"
 #|   - "Size and alpha"
+#|   - "fill"
 #| layout-ncol: 2
 #| fig.height: 3.5
 #| fig.width: 3
